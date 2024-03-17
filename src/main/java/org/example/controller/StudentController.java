@@ -28,13 +28,13 @@ public class StudentController {
         return ResponseEntity.ok(student);
     }
 
-    @GetMapping("/all")
+    @GetMapping()
     public ResponseEntity<Collection<Student>> getAllStudents() {
         return ResponseEntity.ok(studentService.getAllStudents());
     }
 
-    @GetMapping("/age")
-    public ResponseEntity<Collection<Student>> getStudentsByAge(@RequestParam(required = false) int age) {
+    @GetMapping(params = "age")
+    public ResponseEntity<Collection<Student>> getStudentsByAge(@RequestParam int age) {
         if (age > 0) {
             return ResponseEntity.ok(studentService.getFilteredStudentsByAge(age));
         }
@@ -50,13 +50,13 @@ public class StudentController {
     public ResponseEntity<Student> editStudent(@RequestBody Student student) {
         Student foundeStudent = studentService.editStudent(student);
         if (foundeStudent == null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
         return ResponseEntity.ok(foundeStudent);
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity deleteStudent(@PathVariable Long id) {
+    public ResponseEntity<Student> deleteStudent(@PathVariable Long id) {
         studentService.deleteStudent(id);
         return ResponseEntity.ok().build();
     }

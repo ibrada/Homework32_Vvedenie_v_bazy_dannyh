@@ -1,5 +1,6 @@
 package org.example.service;
 
+import org.example.model.Faculty;
 import org.example.model.Student;
 import org.example.repository.StudentRepository;
 import org.springframework.stereotype.Service;
@@ -22,11 +23,12 @@ public class StudentService {
     }
 
     public Student createStudent(Student student) {
+        student.setId(null);
         return studentRepository.save(student);
     }
 
     public Student findStudent(long lastId) {
-        return studentRepository.findById(lastId).get();
+        return studentRepository.findById(lastId).orElse(null);
     }
 
     public Student editStudent(Student student) {
@@ -42,6 +44,6 @@ public class StudentService {
     }
 
     public Collection<Student> getFilteredStudentsByAge(int age) {
-    return studentRepository.findByAge(age);
+        return studentRepository.findByAge(age);
     }
 }
